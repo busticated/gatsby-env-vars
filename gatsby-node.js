@@ -1,7 +1,20 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/node-apis/
- */
+process.env.MY_CLIENT_CONFIGS = JSON.stringify({
+  foo: 1,
+  bar: false,
+  baz: {
+    qux: [1, 2, 3]
+  }
+});
 
-// You can delete this file if you're not using it
+
+exports.onCreateWebpackConfig = ({ stage, actions, plugins, getConfig }) => {
+	actions.setWebpackConfig({
+		plugins: [
+			plugins.define({
+				'process.env': {
+					MY_CLIENT_CONFIGS: JSON.stringify(process.env.MY_CLIENT_CONFIGS)
+				}
+			})
+		]
+	});
+};
